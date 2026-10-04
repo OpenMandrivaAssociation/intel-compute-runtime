@@ -4,6 +4,7 @@
 %global neo_hotfix 11
 
 %global _disable_lto 1
+%global debug_package %{nil}
 %global optflags %(echo %{optflags} | sed -e 's/ -flto//g; s/ -g3//g; s/ -gdwarf-4//g') -g0
 
 Name:		intel-compute-runtime
@@ -115,6 +116,7 @@ export CXXFLAGS="%{optflags} -DCL_API_SUFFIX__VERSION_3_1=CL_API_SUFFIX_COMMON"
 	-DNEO_ENABLE_I915_PRELIM_DETECTION=TRUE \
 	-DNEO_ENABLE_XE_PRELIM_DETECTION=TRUE \
 	-DNEO_DISABLE_MITIGATIONS=TRUE \
+	-DNEO_DISABLE_LTO=TRUE \
 	-DCMAKE_COMPILE_WARNING_AS_ERROR:BOOL=OFF
 ninja -v
 
