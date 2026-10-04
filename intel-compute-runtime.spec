@@ -16,7 +16,6 @@ URL:		https://github.com/intel/compute-runtime
 Source0:	%{url}/archive/refs/tags/%{version}/compute-runtime-%{version}.tar.gz
 
 # Intel GPU userspace. znver1 is OpenMandriva's optimized x86_64.
-ExclusiveArch:	x86_64 znver1
 
 BuildRequires:	cmake
 BuildRequires:	ninja
