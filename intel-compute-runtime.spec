@@ -15,8 +15,6 @@ License:	MIT
 URL:		https://github.com/intel/compute-runtime
 Source0:	%{url}/archive/refs/tags/%{version}/compute-runtime-%{version}.tar.gz
 
-# Intel GPU userspace. znver1 is OpenMandriva's optimized x86_64.
-
 BuildRequires:	cmake
 BuildRequires:	ninja
 BuildRequires:	pkgconfig(igdgmm)
@@ -94,13 +92,15 @@ headers stay in the Level Zero loader development package.
 
 %prep
 %autosetup -p1 -n compute-runtime-%{version}
-# x86-only build; the ARM neon helper is unused and not from our repos.
-rm -rf third_party/sse2neon
 # Upstream adds -Werror on top of -Wall. Clang 23 warns in code gcc accepts.
 sed -i 's/ -Wall -Wextra -Werror/ -Wall -Wextra/' CMakeLists.txt
 
 %build
 export CMAKE_GENERATOR=Ninja
+# NEO declares clGetKernelSuggestedLocalWorkSize itself. Cooker OpenCL
+# headers (2025.07.22) define the suffix macros only through 3.0.
+export CFLAGS="%{optflags} -DCL_API_SUFFIX__VERSION_3_1=CL_API_SUFFIX_COMMON"
+export CXXFLAGS="%{optflags} -DCL_API_SUFFIX__VERSION_3_1=CL_API_SUFFIX_COMMON"
 # Mitigations belong in the kernel. NEO's userspace copies cost up to ~20%%.
 %cmake \
 	-DCMAKE_BUILD_TYPE=Release \
