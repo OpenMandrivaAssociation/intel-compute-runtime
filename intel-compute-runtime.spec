@@ -15,6 +15,8 @@ Group:		System/Kernel and hardware
 License:	MIT
 URL:		https://github.com/intel/compute-runtime
 Source0:	%{url}/archive/refs/tags/%{version}/compute-runtime-%{version}.tar.gz
+# Bundled sse2neon declares _mm_sfence and not _mm_mfence.
+Patch0:		0001-sse2neon-mfence.patch
 
 BuildRequires:	cmake
 BuildRequires:	ninja

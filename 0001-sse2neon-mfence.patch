@@ -1,0 +1,17 @@
+--- a/third_party/sse2neon/sse2neon.h	2026-09-17 13:23:04.000000000 +0200
++++ b/third_party/sse2neon/sse2neon.h	2026-10-04 09:50:43.080167456 +0200
+@@ -2397,6 +2397,14 @@
+     __sync_synchronize();
+ }
+ 
++// Full memory fence. This sse2neon snapshot implements sfence as
++// __sync_synchronize() and does not declare mfence. Upstream sse2neon
++// uses the same barrier for both.
++FORCE_INLINE void _mm_mfence(void)
++{
++    __sync_synchronize();
++}
++
+ // FORCE_INLINE __m128 _mm_shuffle_ps(__m128 a, __m128 b, __constrange(0,255)
+ // int imm)
+ #if __has_builtin(__builtin_shufflevector)
